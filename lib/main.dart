@@ -14,11 +14,11 @@ class RescueMeshApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = ColorScheme.fromSeed(
-      seedColor: const Color(0xFFE65100), // Emergency orange
+      seedColor: const Color(0xFF00BCD4), // Electric Cyan
       brightness: Brightness.dark,
-      surface: const Color(0xFF0A0E17), // Deep bluish-black
-      onSurface: const Color(0xFFE2E8F0),
-      surfaceContainerHighest: const Color(0xFF161C24),
+      surface: const Color(0xFF000000), // Pure AMOLED black
+      onSurface: const Color(0xFFE0E0E0),
+      surfaceContainerHighest: const Color(0xFF111111), // Subtle dark gray
     );
 
     return ChangeNotifierProvider(
@@ -29,28 +29,27 @@ class RescueMeshApp extends StatelessWidget {
         theme: ThemeData(
           colorScheme: scheme,
           useMaterial3: true,
-          fontFamily: 'Inter', // Try to use a clean modern font if available
-          scaffoldBackgroundColor: scheme.surface,
-          appBarTheme: AppBarTheme(
+          scaffoldBackgroundColor: Colors.black,
+          appBarTheme: const AppBarTheme(
             centerTitle: false,
             scrolledUnderElevation: 0,
-            backgroundColor: scheme.surface,
-            foregroundColor: scheme.onSurface,
-            titleTextStyle: const TextStyle(
+            backgroundColor: Colors.black,
+            foregroundColor: Color(0xFFE0E0E0),
+            titleTextStyle: TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.2,
+              fontWeight: FontWeight.w600,
               color: Colors.white,
             ),
             elevation: 0,
           ),
           cardTheme: CardThemeData(
             margin: EdgeInsets.zero,
-            color: scheme.surfaceContainerHighest,
+            color: const Color(0xFF111111),
+            elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
               side: BorderSide(
-                color: Colors.white.withValues(alpha: 0.05),
+                color: Colors.white.withValues(alpha: 0.06),
               ),
             ),
           ),
@@ -69,22 +68,23 @@ class RescueMeshApp extends StatelessWidget {
           floatingActionButtonTheme: FloatingActionButtonThemeData(
             backgroundColor: scheme.primaryContainer,
             foregroundColor: scheme.onPrimaryContainer,
+            elevation: 0,
           ),
           dividerTheme: DividerThemeData(
-            thickness: 1, 
+            thickness: 1,
             space: 1,
-            color: Colors.white.withValues(alpha: 0.05),
+            color: Colors.white.withValues(alpha: 0.04),
           ),
           inputDecorationTheme: InputDecorationTheme(
             filled: true,
-            fillColor: scheme.surfaceContainerHighest.withValues(alpha: 120),
+            fillColor: const Color(0xFF111111),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: scheme.outlineVariant),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.08)),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide(color: scheme.outlineVariant),
+              borderSide: BorderSide(color: Colors.white.withValues(alpha: 0.08)),
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(16),
@@ -92,8 +92,18 @@ class RescueMeshApp extends StatelessWidget {
             ),
           ),
           navigationBarTheme: NavigationBarThemeData(
-            backgroundColor: scheme.surface,
+            backgroundColor: Colors.black,
             indicatorColor: scheme.primaryContainer,
+            surfaceTintColor: Colors.transparent,
+          ),
+          bottomSheetTheme: const BottomSheetThemeData(
+            backgroundColor: Color(0xFF111111),
+          ),
+          dialogTheme: const DialogThemeData(
+            backgroundColor: Color(0xFF111111),
+          ),
+          popupMenuTheme: const PopupMenuThemeData(
+            color: Color(0xFF111111),
           ),
         ),
         home: const BootstrapScreen(),

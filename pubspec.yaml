@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.1.0+2
 
 environment:
-  sdk: ^3.10.8
+  sdk: ^3.0.0
 
 dependencies:
   flutter:
@@ -37,6 +37,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
@@ -44,3 +45,9 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/images/RescuePing.png"
+  min_sdk_android: 21

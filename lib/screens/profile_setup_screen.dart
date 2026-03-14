@@ -133,18 +133,14 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        (_isRescuer
-                                ? const Color(0xFF1565C0)
-                                : const Color(0xFFE65100))
-                            .withValues(alpha: 0.15),
-                        Colors.transparent,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                    color: const Color(0xFF111111),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: (_isRescuer
+                              ? scheme.primary
+                              : scheme.error)
+                          .withValues(alpha: 0.2),
                     ),
-                    borderRadius: BorderRadius.circular(20),
                   ),
                   child: Column(
                     children: [
@@ -152,7 +148,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                         _isRescuer ? Icons.shield : Icons.sos,
                         size: 48,
                         color: _isRescuer
-                            ? const Color(0xFF2196F3)
+                            ? scheme.primary
                             : scheme.error,
                       ),
                       const SizedBox(height: 8),
@@ -265,7 +261,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             filled: true,
-                            fillColor: scheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                            fillColor: const Color(0xFF111111),
                           ),
                           items: _bloodGroups.map((g) {
                             return DropdownMenuItem(
@@ -346,7 +342,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             filled: true,
-                            fillColor: scheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                            fillColor: const Color(0xFF111111),
                             alignLabelWithHint: true,
                           ),
                         ),
@@ -391,7 +387,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             filled: true,
-                            fillColor: scheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                            fillColor: const Color(0xFF111111),
                           ),
                         ),
                         const SizedBox(height: 12),
@@ -405,7 +401,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                               borderRadius: BorderRadius.circular(16),
                             ),
                             filled: true,
-                            fillColor: scheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                            fillColor: const Color(0xFF111111),
                           ),
                         ),
                       ],

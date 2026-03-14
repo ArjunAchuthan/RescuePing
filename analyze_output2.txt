@@ -1,0 +1,4 @@
+Analyzing RescuePing...                                         
+
+  error - The name '_' is already defined - lib\screens\rescuer_home_screen.dart:382:39 - duplicate_definition
+

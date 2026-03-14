@@ -1,0 +1,48 @@
+﻿  ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+     FLUTTER LAUNCHER ICONS (v0.14.4)                               
+  ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ
+  
+ΓÇó Creating default icons Android
+ΓÇó Overwriting the default Android launcher icon with a new icon
+ΓÇó Overwriting default iOS launcher icon with new icon
+dart : Unhandled exception:
+At line:1 char:1
++ dart run 
+flutter_launcher_icons 
+2>&1 | Out-File -Encoding 
+utf8 d:\Res ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecifi    ed: 
+(Unhandled exc    
+eption::String) []    , 
+RemoteException
+    + FullyQualifiedEr    
+rorId : NativeComm    
+andError
+ 
+PathNotFoundException: 
+Cannot open file, path = 'i
+os/Runner/Assets.xcassets/A
+ppIcon.appiconset/Icon-App-
+20x20@1x.png' (OS Error: 
+The system cannot find the 
+path specified, errno = 3)
+#0      
+_checkForErrorResponse 
+(dart:io/common.dart:58:9)
+#1      
+_File.open.<anonymous 
+closure> (dart:io/file_impl
+.dart:442:7)
+<asynchronous suspension>
+#2      _File.writeAsBytes.
+<anonymous closure> (dart:i
+o/file_impl.dart:732:34)
+<asynchronous suspension>
+#3      
+overwriteDefaultIcons (pack
+age:flutter_launcher_icons/
+ios.dart:272:3)
+<asynchronous suspension>

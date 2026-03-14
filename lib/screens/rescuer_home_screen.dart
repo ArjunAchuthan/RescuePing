@@ -108,20 +108,13 @@ class _RescuerDashboard extends StatelessWidget {
       appBar: AppBar(
         title: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: const Color(0xFF2196F3).withValues(alpha: 40),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  width: 24,
-                  height: 24,
-                  fit: BoxFit.cover,
-                ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.asset(
+                'assets/images/RescuePing.png',
+                width: 28,
+                height: 28,
+                fit: BoxFit.cover,
               ),
             ),
             const SizedBox(width: 10),
@@ -179,18 +172,10 @@ class _RescuerDashboard extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [
-                          const Color(0xFF1565C0).withValues(alpha: 30),
-                          const Color(0xFF111E36),
-                          scheme.surfaceContainerHighest,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.circular(20),
+                      color: const Color(0xFF111111),
+                      borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: const Color(0xFF2196F3).withValues(alpha: 40),
+                        color: Colors.white.withValues(alpha: 0.06),
                       ),
                     ),
                     child: Column(
@@ -234,22 +219,8 @@ class _RescuerDashboard extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              scheme.error.withValues(alpha: 0.8),
-                              const Color(0xFFD32F2F),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
+                          color: scheme.error,
                           shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: scheme.error.withValues(alpha: 0.4),
-                              blurRadius: 10,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
                         ),
                         child: const Icon(Icons.sos_rounded, size: 16, color: Colors.white),
                       ),
@@ -379,7 +350,7 @@ class _RescuerDashboard extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               sliver: SliverList.separated(
                 itemCount: alerts.length,
-                separatorBuilder: (_, _) => const SizedBox(height: 10),
+                separatorBuilder: (context, index) => const SizedBox(height: 10),
                 itemBuilder: (context, index) {
                   return _AlertCard(beacon: alerts[index]);
                 },

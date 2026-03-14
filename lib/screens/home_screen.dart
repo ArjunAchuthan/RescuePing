@@ -191,20 +191,13 @@ class _DashboardTabState extends State<_DashboardTab> {
       appBar: AppBar(
         title: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.error.withValues(alpha: 40),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  width: 24,
-                  height: 24,
-                  fit: BoxFit.cover,
-                ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.asset(
+                'assets/images/RescuePing.png',
+                width: 28,
+                height: 28,
+                fit: BoxFit.cover,
               ),
             ),
             const SizedBox(width: 10),
@@ -320,40 +313,15 @@ class _DashboardTabState extends State<_DashboardTab> {
                   ),
                   const SizedBox(height: 8),
                   // ─── "I've Been Rescued" button ──────────────
-                  Container(
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF81C784), Color(0xFF388E3C)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color(0xFF4CAF50).withValues(alpha: 0.3),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: ElevatedButton.icon(
-                      onPressed: _selfConfirmRescue,
-                      icon: const Icon(Icons.health_and_safety, color: Colors.white),
-                      label: const Text(
-                        'I\'ve Been Rescued',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 14,
-                        ),
+                  FilledButton.icon(
+                    onPressed: _selfConfirmRescue,
+                    icon: const Icon(Icons.health_and_safety),
+                    label: const Text('I\'ve Been Rescued'),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: const Color(0xFF388E3C),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 14,
                       ),
                     ),
                   ),
@@ -420,26 +388,12 @@ class _DashboardTabState extends State<_DashboardTab> {
                     child: Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                scheme.error.withValues(alpha: 0.8),
-                                const Color(0xFFD32F2F),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: scheme.error.withValues(alpha: 0.4),
-                                blurRadius: 10,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: const Icon(Icons.sos_rounded, size: 14, color: Colors.white),
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: scheme.error,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.sos_rounded, size: 14, color: Colors.white),
                         ),
                         const SizedBox(width: 10),
                         Text(

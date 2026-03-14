@@ -107,41 +107,17 @@ class _RescuerMapScreenState extends State<RescuerMapScreen> {
       appBar: AppBar(
         title: Text(beacon.senderNickname),
       ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    const Color(0xFF111E36),
-                    scheme.surface,
-                    scheme.surface,
-                  ],
-                ),
-              ),
-            ),
-          ),
-          ListView(
+      body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
           // ─── Severity header ─────────────────────────
           Container(
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  levelColor.withValues(alpha: 0.15),
-                  scheme.surfaceContainerHighest,
-                ],
-              ),
-              borderRadius: BorderRadius.circular(20),
+              color: const Color(0xFF111111),
+              borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: levelColor.withValues(alpha: 0.3),
+                color: levelColor.withValues(alpha: 0.2),
               ),
             ),
             child: Padding(
@@ -253,40 +229,21 @@ class _RescuerMapScreenState extends State<RescuerMapScreen> {
 
           // ─── Action buttons ─────────────────────────
           if (beacon.hasLocation)
-            Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    scheme.primary,
-                    scheme.primary.withValues(alpha: 0.8),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: scheme.primary.withValues(alpha: 0.3),
-                    blurRadius: 12,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: ElevatedButton.icon(
-                onPressed: _launching ? null : _openMaps,
-                icon: _launching
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                      )
-                    : const Icon(Icons.directions_rounded, color: Colors.white),
-                label: const Text(
-                  'Get Directions',
-                  style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  shadowColor: Colors.transparent,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+            FilledButton.icon(
+              onPressed: _launching ? null : _openMaps,
+              icon: _launching
+                  ? const SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                    )
+                  : const Icon(Icons.directions_rounded),
+              label: const Text('Get Directions'),
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                textStyle: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
@@ -339,8 +296,6 @@ class _RescuerMapScreenState extends State<RescuerMapScreen> {
               ),
             ),
           ),
-        ],
-      ),
         ],
       ),
     );

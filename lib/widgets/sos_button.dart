@@ -105,14 +105,9 @@ class _SosButtonState extends State<SosButton>
               ),
               boxShadow: [
                 BoxShadow(
-                  color: color.withValues(alpha: widget.isActive ? 0.6 : 0.4),
-                  blurRadius: widget.isActive ? 50 : 25,
-                  spreadRadius: widget.isActive ? 12 : 4,
-                ),
-                BoxShadow(
-                  color: Colors.white.withValues(alpha: 0.1),
-                  blurRadius: 10,
-                  offset: const Offset(-2, -2),
+                  color: color.withValues(alpha: widget.isActive ? 0.5 : 0.3),
+                  blurRadius: widget.isActive ? 30 : 15,
+                  spreadRadius: widget.isActive ? 6 : 2,
                 ),
               ],
             ),
@@ -212,24 +207,8 @@ class SosLevelPicker extends StatelessWidget {
               padding: const EdgeInsets.only(bottom: 12),
               child: Container(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      color,
-                      color.withValues(alpha: 0.7),
-                    ],
-                  ),
+                  color: color,
                   borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: color.withValues(alpha: 0.3),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.3),
-                    width: 0.5,
-                  ),
                 ),
                 child: ElevatedButton.icon(
                   onPressed: () {
@@ -241,8 +220,7 @@ class SosLevelPicker extends StatelessWidget {
                     level.label,
                     style: const TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.5,
+                      fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
                   ),

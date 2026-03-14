@@ -24,8 +24,8 @@ class MessageBubble extends StatelessWidget {
 
     // Bluish-black sleek colors
     final bg = isMine
-        ? const Color(0xFF1E3A5F) // Deep solid blue for my messages
-        : const Color(0xFF162032); // Dark bluish-grey for others
+        ? const Color(0xFF0D3B4F) // Dark cyan-tinted for my messages
+        : const Color(0xFF111111); // Dark gray for others
 
     // Formatted time
     final time = DateTime.fromMillisecondsSinceEpoch(message.createdAtMs);
@@ -54,13 +54,6 @@ class MessageBubble extends StatelessWidget {
             decoration: BoxDecoration(
               color: bg,
               borderRadius: borderRadius,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.2),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
             ),
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             child: Column(

@@ -151,20 +151,13 @@ class _DiscoveryScreenState extends State<DiscoveryScreen> {
       appBar: AppBar(
         title: Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(4),
-              decoration: BoxDecoration(
-                color: scheme.primary.withValues(alpha: 40),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: Image.asset(
-                  'assets/images/logo.png',
-                  width: 24,
-                  height: 24,
-                  fit: BoxFit.cover,
-                ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.asset(
+                'assets/images/RescuePing.png',
+                width: 28,
+                height: 28,
+                fit: BoxFit.cover,
               ),
             ),
             const SizedBox(width: 10),
@@ -179,24 +172,7 @@ class _DiscoveryScreenState extends State<DiscoveryScreen> {
           ),
         ],
       ),
-      body: Stack(
-        children: [
-          Positioned.fill(
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    const Color(0xFF111E36),
-                    scheme.surface,
-                    scheme.surface,
-                  ],
-                ),
-              ),
-            ),
-          ),
-          CustomScrollView(
+      body: CustomScrollView(
             slivers: [
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
@@ -354,13 +330,6 @@ class _DiscoveryScreenState extends State<DiscoveryScreen> {
                 ),
             ],
           ),
-        ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _openChat,
-        label: const Text('Chat Room'),
-        icon: const Icon(Icons.forum_outlined),
-      ),
     );
   }
 }
@@ -401,101 +370,76 @@ class _MeshHeroHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
 
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(24),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              const Color(0xFF1565C0).withValues(alpha: 0.15),
-              const Color(0xFF111E36),
-              scheme.surfaceContainerHighest,
-            ],
-          ),
-          border: Border.all(color: const Color(0xFF2196F3).withValues(alpha: 0.2)),
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF111111),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: scheme.primary.withValues(alpha: 0.15),
         ),
-        child: Stack(
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Positioned.fill(
-              child: IgnorePointer(
-                child: Opacity(
-                  opacity: 0.08,
-                  child: CustomPaint(
-                    painter: _MeshBackdropPainter(
-                      color: scheme.onSurfaceVariant,
-                    ),
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 18,
+                  backgroundColor: scheme.primary,
+                  foregroundColor: scheme.onPrimary,
+                  child: const Icon(Icons.wifi_tethering, size: 20),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        nickname,
+                        style: Theme.of(context).textTheme.titleLarge
+                            ?.copyWith(
+                              fontWeight: FontWeight.w800,
+                            ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        transportLabel,
+                        style: Theme.of(context).textTheme.bodySmall
+                            ?.copyWith(color: scheme.onSurfaceVariant),
+                      ),
+                    ],
                   ),
                 ),
-              ),
+                _StatusPill(
+                  label: isRunning
+                      ? (isConnecting ? 'Starting…' : 'Online')
+                      : 'Offline',
+                  color: isRunning ? scheme.primary : scheme.outline,
+                ),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.all(14),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 18,
-                        backgroundColor: scheme.primary,
-                        foregroundColor: scheme.onPrimary,
-                        child: const Icon(Icons.wifi_tethering, size: 20),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              nickname,
-                              style: Theme.of(context).textTheme.titleLarge
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w900,
-                                    letterSpacing: 0.2,
-                                  ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            const SizedBox(height: 2),
-                            Text(
-                              transportLabel,
-                              style: Theme.of(context).textTheme.bodySmall
-                                  ?.copyWith(color: scheme.onSurfaceVariant),
-                            ),
-                          ],
-                        ),
-                      ),
-                      _StatusPill(
-                        label: isRunning
-                            ? (isConnecting ? 'Starting…' : 'Online')
-                            : 'Offline',
-                        color: isRunning ? scheme.primary : scheme.outline,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Wrap(
-                    spacing: 8,
-                    runSpacing: 8,
-                    children: [
-                      _StatusPill(
-                        label: '$connectedCount connected',
-                        color: scheme.secondary,
-                      ),
-                      _StatusPill(
-                        label: '$discoveredCount discovered',
-                        color: scheme.tertiary,
-                      ),
-                      _StatusPill(
-                        label: 'TTL $hopLimit hops',
-                        color: scheme.primary,
-                      ),
-                      _StatusPill(label: 'De-dupe on', color: scheme.primary),
-                    ],
-                  ),
-                ],
-              ),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                _StatusPill(
+                  label: '$connectedCount connected',
+                  color: scheme.secondary,
+                ),
+                _StatusPill(
+                  label: '$discoveredCount discovered',
+                  color: scheme.tertiary,
+                ),
+                _StatusPill(
+                  label: 'TTL $hopLimit hops',
+                  color: scheme.primary,
+                ),
+                _StatusPill(label: 'De-dupe on', color: scheme.primary),
+              ],
             ),
           ],
         ),
@@ -504,46 +448,7 @@ class _MeshHeroHeader extends StatelessWidget {
   }
 }
 
-class _MeshBackdropPainter extends CustomPainter {
-  _MeshBackdropPainter({this.color = const Color(0xFFFFFFFF)});
 
-  final Color color;
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
-    final nodes = <Offset>[
-      Offset(size.width * 0.12, size.height * 0.30),
-      Offset(size.width * 0.32, size.height * 0.18),
-      Offset(size.width * 0.55, size.height * 0.28),
-      Offset(size.width * 0.78, size.height * 0.18),
-      Offset(size.width * 0.22, size.height * 0.62),
-      Offset(size.width * 0.48, size.height * 0.68),
-      Offset(size.width * 0.74, size.height * 0.62),
-    ];
-
-    // Links
-    paint.color = color;
-    for (var i = 0; i < nodes.length - 1; i++) {
-      canvas.drawLine(nodes[i], nodes[i + 1], paint);
-    }
-    canvas.drawLine(nodes[1], nodes[4], paint);
-    canvas.drawLine(nodes[2], nodes[5], paint);
-    canvas.drawLine(nodes[3], nodes[6], paint);
-
-    // Nodes
-    paint.style = PaintingStyle.fill;
-    for (final n in nodes) {
-      canvas.drawCircle(n, 4.5, paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
 
 class _TransportLogs extends StatelessWidget {
   const _TransportLogs({required this.logs});
