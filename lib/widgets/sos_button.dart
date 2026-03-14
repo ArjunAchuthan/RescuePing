@@ -90,20 +90,32 @@ class _SosButtonState extends State<SosButton>
       child: GestureDetector(
         onTap: widget.onTap,
         onLongPress: widget.onLongPress,
-        child: Container(
-          width: 200,
-          height: 200,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: color,
-            boxShadow: [
-              BoxShadow(
-                color: color.withValues(alpha: 100),
-                blurRadius: widget.isActive ? 40 : 20,
-                spreadRadius: widget.isActive ? 8 : 2,
+          child: Container(
+            width: 200,
+            height: 200,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: RadialGradient(
+                colors: [
+                  color.withValues(alpha: 0.8),
+                  color,
+                ],
+                center: const Alignment(-0.2, -0.2),
+                radius: 0.8,
               ),
-            ],
-          ),
+              boxShadow: [
+                BoxShadow(
+                  color: color.withValues(alpha: widget.isActive ? 0.6 : 0.4),
+                  blurRadius: widget.isActive ? 50 : 25,
+                  spreadRadius: widget.isActive ? 12 : 4,
+                ),
+                BoxShadow(
+                  color: Colors.white.withValues(alpha: 0.1),
+                  blurRadius: 10,
+                  offset: const Offset(-2, -2),
+                ),
+              ],
+            ),
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -197,21 +209,50 @@ class SosLevelPicker extends StatelessWidget {
           ..._levels.map((level) {
             final color = _color(level);
             return Padding(
-              padding: const EdgeInsets.only(bottom: 10),
-              child: FilledButton.icon(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  onSelected(level);
-                },
-                icon: Icon(_icon(level)),
-                label: Text(level.label),
-                style: FilledButton.styleFrom(
-                  backgroundColor: color,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  textStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+              padding: const EdgeInsets.only(bottom: 12),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      color,
+                      color.withValues(alpha: 0.7),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: color.withValues(alpha: 0.3),
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.3),
+                    width: 0.5,
+                  ),
+                ),
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    onSelected(level);
+                  },
+                  icon: Icon(_icon(level), color: Colors.white),
+                  label: Text(
+                    level.label,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 0.5,
+                      color: Colors.white,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    padding: const EdgeInsets.symmetric(vertical: 18),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
                   ),
                 ),
               ),

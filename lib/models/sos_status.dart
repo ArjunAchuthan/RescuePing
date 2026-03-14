@@ -41,6 +41,7 @@ class SosBeacon {
     this.peopleCount = 1,
     this.bloodGroup = '',
     required this.timestampMs,
+    this.isRescued = false,
   });
 
   final String senderDeviceId;
@@ -62,6 +63,9 @@ class SosBeacon {
   /// Epoch ms when the SOS was created.
   final int timestampMs;
 
+  /// Whether this person has been rescued.
+  final bool isRescued;
+
   bool get hasLocation => latitude != null && longitude != null;
 
   SosBeacon copyWith({
@@ -74,6 +78,7 @@ class SosBeacon {
     int? peopleCount,
     String? bloodGroup,
     int? timestampMs,
+    bool? isRescued,
   }) {
     return SosBeacon(
       senderDeviceId: senderDeviceId ?? this.senderDeviceId,
@@ -85,6 +90,7 @@ class SosBeacon {
       peopleCount: peopleCount ?? this.peopleCount,
       bloodGroup: bloodGroup ?? this.bloodGroup,
       timestampMs: timestampMs ?? this.timestampMs,
+      isRescued: isRescued ?? this.isRescued,
     );
   }
 

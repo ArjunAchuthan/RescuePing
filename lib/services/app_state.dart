@@ -52,13 +52,16 @@ class AppState extends ChangeNotifier {
   List<SosBeacon> _nearbyBeacons = const [];
   List<SosBeacon> get nearbyBeacons => _nearbyBeacons;
 
-  /// Only non-safe beacons (active alerts).
+  /// Only non-safe beacons from OTHER devices (active alerts).
   List<SosBeacon> get activeAlerts =>
-      _nearbyBeacons.where((b) => b.level != SosLevel.safe).toList();
+      _nearbyBeacons
+          .where((b) => b.level != SosLevel.safe && b.senderDeviceId != _deviceId)
+          .toList();
 
   StreamSubscription<TransportEvent>? _transportEventsSub;
   StreamSubscription<void>? _messageAddedSub;
   StreamSubscription<SosBeacon>? _sosReceivedSub;
+  StreamSubscription<String>? _rescueConfirmSub;
   Timer? _discoveryTimer;
 
   bool _isInitialized = false;
@@ -78,6 +81,13 @@ class AppState extends ChangeNotifier {
 
   List<PeerDevice> get peers => _peers;
   List<ChatMessage> get messages => _messages;
+
+  /// The role of the current user.
+  UserRole get userRole => _profile?.role ?? UserRole.needHelp;
+
+  /// Stream for the UI to listen to rescue confirmations.
+  final _rescueConfirmUiController = StreamController<String>.broadcast();
+  Stream<String> get rescueConfirmReceived => _rescueConfirmUiController.stream;
 
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
@@ -183,6 +193,43 @@ class AppState extends ChangeNotifier {
     await _refreshBeacons();
   }
 
+  // ─── Rescue confirmation ─────────────────────────────────────────
+
+  /// Rescuer marks a trapped person as rescued. Sends a confirm packet.
+  Future<void> markAsRescued(String targetDeviceId) async {
+    final relay = _relay;
+    if (relay != null) {
+      await relay.sendRescueConfirm(targetDeviceId);
+    }
+    // Also mark locally so it disappears from the rescuer's list.
+    await _db.markBeaconRescued(targetDeviceId);
+    await _refreshBeacons();
+  }
+
+  /// Trapped person accepts rescue. Cancels SOS, wipes profile, resets app.
+  Future<void> confirmRescued() async {
+    await cancelAlert();
+    await _db.clearAllUserData();
+    _profile = null;
+    _nickname = null;
+    await _prefs!.remove(_prefsNicknameKey);
+    notifyListeners();
+  }
+
+  /// Full reset: wipe all data and return to initial state.
+  Future<void> resetApp() async {
+    await stopTransport();
+    await _db.clearAllUserData();
+    _profile = null;
+    _nickname = null;
+    _currentSosLevel = SosLevel.safe;
+    _nearbyBeacons = const [];
+    _peers = const [];
+    _messages = const [];
+    await _prefs!.remove(_prefsNicknameKey);
+    notifyListeners();
+  }
+
   // ─── Transport ───────────────────────────────────────────────────
 
   Future<void> startTransport() async {
@@ -237,6 +284,9 @@ class AppState extends ChangeNotifier {
     _sosReceivedSub = _relay!.sosReceived.listen((_) async {
       await _refreshBeacons();
     });
+    _rescueConfirmSub = _relay!.rescueConfirmReceived.listen((rescuerName) {
+      _rescueConfirmUiController.add(rescuerName);
+    });
 
     // For a cluster mesh, we typically advertise and discover simultaneously.
     await transport.startAdvertising();
@@ -266,6 +316,9 @@ class AppState extends ChangeNotifier {
 
     await _sosReceivedSub?.cancel();
     _sosReceivedSub = null;
+
+    await _rescueConfirmSub?.cancel();
+    _rescueConfirmSub = null;
 
     await _relay?.stop();
     _relay = null;
@@ -354,7 +407,9 @@ class AppState extends ChangeNotifier {
 
   Future<void> _refreshBeacons() async {
     await _db.clearExpiredBeacons();
-    _nearbyBeacons = await _db.listActiveBeacons();
+    final all = await _db.listActiveBeacons();
+    // Exclude our own beacon — we already show our SOS status separately.
+    _nearbyBeacons = all.where((b) => b.senderDeviceId != _deviceId).toList();
     notifyListeners();
   }
 

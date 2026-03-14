@@ -1,0 +1,23 @@
+Resolving dependencies...
+Downloading packages...
+  characters 1.4.0 (1.4.1 available)
+  ffi 2.1.5 (2.2.0 available)
+  geolocator 13.0.4 (14.0.2 available)
+  geolocator_android 4.6.2 (5.0.2 available)
+  hooks 1.0.1 (1.0.2 available)
+  matcher 0.12.17 (0.12.19 available)
+  material_color_utilities 0.11.1 (0.13.0 available)
+  meta 1.17.0 (1.18.1 available)
+  native_toolchain_c 0.17.4 (0.17.5 available)
+  shared_preferences_android 2.4.20 (2.4.21 available)
+  sqflite_android 2.4.2+2 (2.4.2+3 available)
+  test_api 0.7.7 (0.7.10 available)
+  uuid 4.5.2 (4.5.3 available)
+Got dependencies!
+13 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Analyzing my_app...                                             
+
+  error - Expected to find ']' - lib\screens\rescuer_map_screen.dart:344:5 - expected_token
+  error - Expected to find ')' - lib\screens\rescuer_map_screen.dart:344:6 - expected_token
+

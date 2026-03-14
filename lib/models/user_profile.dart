@@ -1,3 +1,18 @@
+/// Role of the user within the rescue system.
+enum UserRole {
+  rescuer,
+  needHelp;
+
+  String get wire => name;
+
+  static UserRole fromWire(String value) {
+    return UserRole.values.firstWhere(
+      (e) => e.name == value,
+      orElse: () => UserRole.needHelp,
+    );
+  }
+}
+
 /// Emergency profile stored locally for the current user.
 ///
 /// This information is included in SOS packets so rescuers can see
@@ -5,6 +20,7 @@
 class UserProfile {
   const UserProfile({
     required this.nickname,
+    this.role = UserRole.needHelp,
     this.bloodGroup = '',
     this.medicalNotes = '',
     this.emergencyContactName = '',
@@ -13,6 +29,9 @@ class UserProfile {
   });
 
   final String nickname;
+
+  /// Whether this user is a rescuer or someone who needs help.
+  final UserRole role;
 
   /// e.g. "A+", "O−", "AB+"
   final String bloodGroup;
@@ -28,6 +47,7 @@ class UserProfile {
 
   UserProfile copyWith({
     String? nickname,
+    UserRole? role,
     String? bloodGroup,
     String? medicalNotes,
     String? emergencyContactName,
@@ -36,6 +56,7 @@ class UserProfile {
   }) {
     return UserProfile(
       nickname: nickname ?? this.nickname,
+      role: role ?? this.role,
       bloodGroup: bloodGroup ?? this.bloodGroup,
       medicalNotes: medicalNotes ?? this.medicalNotes,
       emergencyContactName: emergencyContactName ?? this.emergencyContactName,
@@ -47,6 +68,7 @@ class UserProfile {
 
   Map<String, Object?> toJson() => {
     'nickname': nickname,
+    'role': role.wire,
     'bloodGroup': bloodGroup,
     'medicalNotes': medicalNotes,
     'emergencyContactName': emergencyContactName,
@@ -57,6 +79,7 @@ class UserProfile {
   static UserProfile fromJson(Map<String, Object?> json) {
     return UserProfile(
       nickname: (json['nickname'] as String?) ?? '',
+      role: UserRole.fromWire((json['role'] as String?) ?? 'needHelp'),
       bloodGroup: (json['bloodGroup'] as String?) ?? '',
       medicalNotes: (json['medicalNotes'] as String?) ?? '',
       emergencyContactName: (json['emergencyContactName'] as String?) ?? '',

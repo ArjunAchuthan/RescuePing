@@ -21,8 +21,9 @@ import '../transport/mesh_transport.dart';
 ///   peers except X (and only if hopsRemaining > 0).
 ///
 /// Supported packet types:
-///   - 'chat' – regular text message
-///   - 'sos'  – SOS beacon with GPS & profile info
+///   - 'chat'            – regular text message
+///   - 'sos'             – SOS beacon with GPS & profile info
+///   - 'rescue_confirm'  – rescuer marks a trapped person as rescued
 class MessageRelayManager {
   MessageRelayManager({
     required this.database,
@@ -49,6 +50,10 @@ class MessageRelayManager {
   final _sosReceivedController = StreamController<SosBeacon>.broadcast();
   Stream<SosBeacon> get sosReceived => _sosReceivedController.stream;
 
+  /// Emits the rescuer's nickname when a rescue_confirm is received for this device.
+  final _rescueConfirmController = StreamController<String>.broadcast();
+  Stream<String> get rescueConfirmReceived => _rescueConfirmController.stream;
+
   Future<void> start() async {
     _incomingSub = transport.incoming.listen(_handleIncomingBytes);
   }
@@ -58,6 +63,7 @@ class MessageRelayManager {
     _incomingSub = null;
     await _messageAddedController.close();
     await _sosReceivedController.close();
+    await _rescueConfirmController.close();
   }
 
   // ─── Send local chat message ─────────────────────────────────────
@@ -120,6 +126,28 @@ class MessageRelayManager {
     await transport.broadcast(bytes);
   }
 
+  // ─── Send rescue confirmation ───────────────────────────────────
+
+  /// Broadcast a rescue_confirm packet targeting [targetDeviceId].
+  Future<void> sendRescueConfirm(String targetDeviceId) async {
+    final messageId = _uuid.v7();
+
+    final packet = MeshPacket(
+      type: 'rescue_confirm',
+      messageId: messageId,
+      senderDeviceId: localDeviceId,
+      senderNickname: localNickname,
+      createdAtMs: DateTime.now().millisecondsSinceEpoch,
+      hopsRemaining: defaultHopLimit,
+      payload: {'targetDeviceId': targetDeviceId},
+    );
+
+    await database.markSeenMessageId(packet.messageId);
+
+    final bytes = Uint8List.fromList(utf8.encode(packet.encode()));
+    await transport.broadcast(bytes);
+  }
+
   // ─── Handle incoming ────────────────────────────────────────────
 
   Future<void> _handleIncomingBytes(IncomingBytes incoming) async {
@@ -140,6 +168,8 @@ class MessageRelayManager {
         await _handleChatPacket(packet, incoming.fromPeerId);
       case 'sos':
         await _handleSosPacket(packet, incoming.fromPeerId);
+      case 'rescue_confirm':
+        await _handleRescueConfirmPacket(packet);
       default:
         // Unknown type – ignore but still forward.
         break;
@@ -185,6 +215,9 @@ class MessageRelayManager {
   Future<void> _handleSosPacket(MeshPacket packet, String fromPeerId) async {
     if (packet.payload == null) return;
 
+    // Skip our own SOS that bounced back through the mesh.
+    if (packet.senderDeviceId == localDeviceId) return;
+
     final beacon = SosBeacon.fromPayload(
       packet.payload!,
       senderDeviceId: packet.senderDeviceId,
@@ -200,5 +233,17 @@ class MessageRelayManager {
     }
 
     _sosReceivedController.add(beacon);
+  }
+
+  Future<void> _handleRescueConfirmPacket(MeshPacket packet) async {
+    if (packet.payload == null) return;
+
+    final targetDeviceId = packet.payload!['targetDeviceId'] as String?;
+    if (targetDeviceId == null) return;
+
+    // Only react if this confirmation is meant for us.
+    if (targetDeviceId == localDeviceId) {
+      _rescueConfirmController.add(packet.senderNickname);
+    }
   }
 }

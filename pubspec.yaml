@@ -26,8 +26,12 @@ dependencies:
   # Peer-to-peer transport (Android Nearby Connections uses Bluetooth/Wi-Fi/Wi-Fi Direct)
   nearby_connections: ^4.3.0
 
+
   # GPS (one-shot location for SOS alerts)
   geolocator: ^13.0.2
+
+  # Open external maps for rescue navigation
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:
@@ -36,3 +40,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  # To add assets to your application, add an assets section, like this:
+  assets:
+    - assets/images/

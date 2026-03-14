@@ -49,13 +49,14 @@ class SosBeaconCard extends StatelessWidget {
 
     return Card(
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: BorderSide(color: color, width: 2),
-      ),
       child: InkWell(
         onTap: onTap,
-        child: Padding(
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border(
+              left: BorderSide(color: color, width: 4),
+            ),
+          ),
           padding: const EdgeInsets.all(14),
           child: Row(
             children: [

@@ -14,14 +14,22 @@ class MessageBubble extends StatelessWidget {
 
     final scheme = Theme.of(context).colorScheme;
 
-    final bg = isMine
-        ? scheme.primaryContainer
-        : scheme.surfaceContainerHighest;
-    final border = isMine
-        ? scheme.primary.withValues(alpha: 89)
-        : scheme.outline.withValues(alpha: 89);
+    // WhatsApp-style asymmetric bubbles
+    final borderRadius = BorderRadius.only(
+      topLeft: const Radius.circular(16),
+      topRight: const Radius.circular(16),
+      bottomLeft: isMine ? const Radius.circular(16) : Radius.zero,
+      bottomRight: isMine ? Radius.zero : const Radius.circular(16),
+    );
 
-    final textColor = scheme.onSurface;
+    // Bluish-black sleek colors
+    final bg = isMine
+        ? const Color(0xFF1E3A5F) // Deep solid blue for my messages
+        : const Color(0xFF162032); // Dark bluish-grey for others
+
+    // Formatted time
+    final time = DateTime.fromMillisecondsSinceEpoch(message.createdAtMs);
+    final timeStr = '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
 
     final meta = <String>[];
     if (!isMine) {
@@ -34,56 +42,78 @@ class MessageBubble extends StatelessWidget {
       meta.add('direct');
     }
 
-    final decoration = BoxDecoration(
-      color: isMine ? null : bg,
-      gradient: isMine
-          ? LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                scheme.primaryContainer,
-                scheme.secondaryContainer.withValues(alpha: 210),
-              ],
-            )
-          : null,
-      borderRadius: BorderRadius.circular(18),
-      border: Border.all(color: border),
-    );
-
-    return Align(
-      alignment: alignment,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 360),
-        child: Material(
-          type: MaterialType.transparency,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Align(
+        alignment: alignment,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: MediaQuery.of(context).size.width * 0.75,
+          ),
           child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 7),
-            padding: const EdgeInsets.all(12),
-            decoration: decoration,
+            decoration: BoxDecoration(
+              color: bg,
+              borderRadius: borderRadius,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.2),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  message.senderNickname,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    fontWeight: FontWeight.w800,
-                    color: isMine ? scheme.onPrimaryContainer : textColor,
+                // Sender Name (Only for received messages)
+                if (!isMine)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 4),
+                    child: Text(
+                      message.senderNickname,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 13,
+                        color: scheme.primary, // Colorful sender name
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 6),
+
+                // Message Body
                 Text(
                   message.body,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    height: 1.25,
-                    color: isMine ? scheme.onPrimaryContainer : textColor,
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
+                    height: 1.3,
                   ),
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  meta.join(' • '),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: scheme.onSurfaceVariant,
-                  ),
+
+                const SizedBox(height: 6),
+
+                // Time and Meta Info (WhatsApp style bottom right)
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      isMine ? timeStr : '${meta.join(' • ')}  $timeStr',
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.white.withValues(alpha: 0.6),
+                      ),
+                    ),
+                    if (isMine) ...[
+                      const SizedBox(width: 6),
+                      Icon(
+                        Icons.done_all, // WhatsApp 'read' tick
+                        size: 14,
+                        color: scheme.primary, // Blueish tick
+                      ),
+                    ],
+                  ],
                 ),
               ],
             ),

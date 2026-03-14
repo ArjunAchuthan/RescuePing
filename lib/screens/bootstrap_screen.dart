@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/user_profile.dart';
 import '../services/app_state.dart';
 import 'home_screen.dart';
-import 'profile_setup_screen.dart';
+import 'rescuer_home_screen.dart';
+import 'role_selection_screen.dart';
 
 class BootstrapScreen extends StatefulWidget {
   const BootstrapScreen({super.key});
@@ -30,12 +32,17 @@ class _BootstrapScreenState extends State<BootstrapScreen> {
       return const Scaffold(body: Center(child: CircularProgressIndicator()));
     }
 
-    // No profile / nickname yet → show profile setup.
+    // No profile / nickname yet → show role selection.
     if (state.nickname == null || state.nickname!.isEmpty) {
-      return const ProfileSetupScreen();
+      return const RoleSelectionScreen();
     }
 
-    // Returning user → go to the rescue dashboard.
+    // Route by role.
+    if (state.userRole == UserRole.rescuer) {
+      return const RescuerHomeScreen();
+    }
+
+    // Default: trapped person / need help.
     return const HomeScreen();
   }
 }

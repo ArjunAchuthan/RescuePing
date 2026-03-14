@@ -149,7 +149,28 @@ class _DiscoveryScreenState extends State<DiscoveryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mesh Network'),
+        title: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(4),
+              decoration: BoxDecoration(
+                color: scheme.primary.withValues(alpha: 40),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: Image.asset(
+                  'assets/images/logo.png',
+                  width: 24,
+                  height: 24,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            const Text('RescuePing Mesh'),
+          ],
+        ),
         actions: [
           IconButton(
             tooltip: 'Open Chat',
@@ -167,7 +188,7 @@ class _DiscoveryScreenState extends State<DiscoveryScreen> {
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [
-                    scheme.primary.withValues(alpha: 20),
+                    const Color(0xFF111E36),
                     scheme.surface,
                     scheme.surface,
                   ],
@@ -388,12 +409,12 @@ class _MeshHeroHeader extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              scheme.primaryContainer,
-              scheme.secondaryContainer,
+              const Color(0xFF1565C0).withValues(alpha: 0.15),
+              const Color(0xFF111E36),
               scheme.surfaceContainerHighest,
             ],
           ),
-          border: Border.all(color: scheme.outlineVariant),
+          border: Border.all(color: const Color(0xFF2196F3).withValues(alpha: 0.2)),
         ),
         child: Stack(
           children: [
